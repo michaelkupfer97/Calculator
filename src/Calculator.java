@@ -12,7 +12,7 @@ public class Calculator implements ActionListener {
     /**
      * all function buttons.
      */
-    JButton addButton, subButton, mulButton, divButton, decButton, equButton, delButton, clrButton,negButton;
+    JButton addButton, subButton, mulButton, divButton, decButton, equButton, delButton, clrButton, negButton;
     /**
      * the panel of all number buttons and some function buttons.
      */
@@ -70,7 +70,9 @@ public class Calculator implements ActionListener {
         funcButtons[7] = clrButton;
         funcButtons[8] = negButton;
 
-
+/**
+ * set the action buttons
+ */
         for (int i = 0; i < 9; i++) {
             //what will be written on the button.
             funcButtons[i].addActionListener(this);
@@ -136,18 +138,30 @@ public class Calculator implements ActionListener {
 
     /**
      * makes the buttons actually work.
+     *
      * @param e the event to be processed
      */
     @Override
     public void actionPerformed(ActionEvent e) {
 
         try {
+            //check if the text field has the" Put Numbers First " message and delete it when putting new number.
+            if (!textField.getText().isEmpty()) {
+                if ((textField.getText()).equals("Put Numbers First") )
+                    textField.setText("");
+            }
 
             for (int i = 0; i < 10; i++) {
                 if (e.getSource() == numberButtons[i]) {
                     textField.setText(textField.getText().concat(String.valueOf(i)));
                 }
             }
+            //check that there is no more than one " . " in the text field
+            if (!textField.getText().isEmpty()) {
+                if ((textField.getText().substring(textField.getText().length()-1)).equals(".") )
+                    textField.setText(textField.getText().substring(0,textField.getText().length()-1));
+            }
+
             if (e.getSource() == decButton) {
                 textField.setText(textField.getText().concat("."));
             }
@@ -172,9 +186,14 @@ public class Calculator implements ActionListener {
                 textField.setText("");
             }
             if (e.getSource() == negButton) {
-                double temp = Double.parseDouble(textField.getText());
-                temp *= -1;
-                textField.setText(String.valueOf(temp));
+                //making sure that will work if starting with minus and won't get exception.
+                if (textField.getText().isEmpty())
+                    textField.setText("-");
+                else {
+                    double temp = Double.parseDouble(textField.getText());
+                    temp *= -1;
+                    textField.setText(String.valueOf(temp));
+                }
             }
             if (e.getSource() == equButton) {
                 boolean isOk = false;
@@ -204,10 +223,9 @@ public class Calculator implements ActionListener {
                     number1 = 0;
                     number2 = 0;
                 } else {
-                    if(result-(int)result==0){
-                        textField.setText(String.valueOf((int)result));
-                    }
-                    else {
+                    if (result - (int) result == 0) {
+                        textField.setText(String.valueOf((int) result));
+                    } else {
                         textField.setText(String.valueOf(result));
                     }
                     number1 = result;
@@ -219,13 +237,15 @@ public class Calculator implements ActionListener {
             if (e.getSource() == delButton) {
                 String str = textField.getText();
                 textField.setText("");
-                textField.setText(str.substring(0,str.length()-1));
+                //make sure that index will not go out of bounds.
+                if (str.length() == 0)
+                    textField.setText("");
+                else
+                    textField.setText(str.substring(0, str.length() - 1));
             }
 
-            // about minus error when start with minus FIX
             //make another text box and not to real value
-        }
-        catch (NumberFormatException e1){
+        } catch (NumberFormatException e1) {
             textField.setText("Put Numbers First");
         }
     }
