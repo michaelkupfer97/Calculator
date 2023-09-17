@@ -45,9 +45,8 @@ public class Calculator implements ActionListener {
         textField.setEditable(false);
 
 
-        /**
-         * set the function buttons.
-         */
+
+        //set the function buttons.
         addButton = new JButton("+");
         subButton = new JButton("-");
         mulButton = new JButton("*");
@@ -57,9 +56,8 @@ public class Calculator implements ActionListener {
         delButton = new JButton("Delete");
         clrButton = new JButton("Clear");
         negButton = new JButton("( - )");
-        /**
-         * put the func buttons in the array
-         */
+
+        //put the func buttons in the array
         funcButtons[0] = addButton;
         funcButtons[1] = subButton;
         funcButtons[2] = mulButton;
@@ -70,9 +68,8 @@ public class Calculator implements ActionListener {
         funcButtons[7] = clrButton;
         funcButtons[8] = negButton;
 
-/**
- * set the action buttons
- */
+
+        //set the action buttons
         for (int i = 0; i < 9; i++) {
             //what will be written on the button.
             funcButtons[i].addActionListener(this);
@@ -80,9 +77,9 @@ public class Calculator implements ActionListener {
             funcButtons[i].setFont(myFont);
             funcButtons[i].setFocusable(false);
         }
-        /**
-         * set the number buttons
-         */
+
+
+        //  set the number buttons
         for (int i = 0; i < 10; i++) {
             numberButtons[i] = new JButton(String.valueOf(i));
             numberButtons[i].addActionListener(this);
@@ -90,9 +87,9 @@ public class Calculator implements ActionListener {
             numberButtons[i].setFocusable(false);
         }
 
-        /**
-         * set the Delete, Clear, negative buttons because they arnt on the panel.
-         */
+
+
+        //  set the Delete, Clear, negative buttons because they arnt on the panel.
         negButton.setBounds(40, 430, 110, 45);
         delButton.setBounds(150, 430, 110, 45);
         clrButton.setBounds(260, 430, 110, 45);
@@ -101,9 +98,8 @@ public class Calculator implements ActionListener {
         panel.setBounds(40, 100, 330, 300);
         panel.setLayout(new GridLayout(4, 4, 10, 10));
         //panel adding.
-        /**
-         * adding the buttons to the panel.
-         */
+
+        //adding the buttons to the panel.
         panel.add(numberButtons[1]);
         panel.add(numberButtons[2]);
         panel.add(numberButtons[3]);
@@ -145,6 +141,7 @@ public class Calculator implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         try {
+
             //check if the text field has the" Put Numbers First " message and delete it when putting new number.
             if (!textField.getText().isEmpty()) {
                 if ((textField.getText()).equals("Put Numbers First") )
@@ -156,14 +153,13 @@ public class Calculator implements ActionListener {
                     textField.setText(textField.getText().concat(String.valueOf(i)));
                 }
             }
-            //check that there is no more than one " . " in the text field
-            if (!textField.getText().isEmpty()) {
-                if ((textField.getText().substring(textField.getText().length()-1)).equals(".") )
-                    textField.setText(textField.getText().substring(0,textField.getText().length()-1));
-            }
 
             if (e.getSource() == decButton) {
-                textField.setText(textField.getText().concat("."));
+                String currentText= textField.getText();
+                //check if there is already a dot in the text.
+                if (!currentText.contains(".")) {
+                    textField.setText(currentText.concat("."));
+                }
             }
             if (e.getSource() == addButton) {
                 number1 = Double.parseDouble(textField.getText());
